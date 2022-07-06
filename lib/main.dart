@@ -1,5 +1,5 @@
 import 'package:films/provider/films.dart';
-import 'package:films/screens/splash.dart';
+import 'package:films/screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.amber,
         ),
-        home: const Splash(),
+        home: const Home(),
       ),
     );
   }

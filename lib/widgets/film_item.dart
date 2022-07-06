@@ -1,4 +1,5 @@
 import 'package:films/provider/films.dart';
+import 'package:films/screens/fildetail.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -16,13 +17,22 @@ class FilmItem extends StatelessWidget {
 
     return Stack(
       children: [
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.indigoAccent,
-              borderRadius: BorderRadius.circular(10)),
-          height: 250,
-          child: Image.asset(film.imgUrl),
-          width: 180,
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) {
+                return const FilmDetail();
+              },
+            ));
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.indigoAccent,
+                borderRadius: BorderRadius.circular(10)),
+            height: 250,
+            child: Image.asset(film.imgUrl),
+            width: 180,
+          ),
         ),
         Positioned(
           bottom: 5,

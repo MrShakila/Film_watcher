@@ -12,16 +12,13 @@ class Filmcontoller {
   Future<void> saveFilmInfo(
     String title,
     String desc,
-    double price,
     File img,
   ) async {
     UploadTask? task = uploadFile(img);
 
     final snapshot = await task!.whenComplete(() {});
     //get the download url
-    //await keyword eka dala nati nisai aula
-    //sir scaffold eke ?
-    //methana await keyword eka dala
+   
     final downloadUrl = await snapshot.ref.getDownloadURL();
     //get an online doc id
     String docId = films.doc().id;
@@ -30,7 +27,7 @@ class Filmcontoller {
       'id': docId,
       'title': title,
       'description': desc,
-      'price': price,
+      'date': DateTime.now(),
       'imageUrl': downloadUrl
     });
 
@@ -43,10 +40,11 @@ class Filmcontoller {
       //getting the file name
       final fileName = basename(img.path);
       //define the file destination
-      final destination = 'filmImages/$fileName';
+      final destination = 'film/$fileName';
       //create firebsse storage instance
       final ref = FirebaseStorage.instance.ref(destination);
       return ref.putFile(img);
+   
     } catch (e) {
       Logger().e(e);
       return null;

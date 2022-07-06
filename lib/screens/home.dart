@@ -1,4 +1,5 @@
 import 'package:films/screens/addfilms.dart';
+import 'package:films/screens/fildetail.dart';
 import 'package:films/widgets/film_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -35,7 +36,14 @@ class Home extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-              onPressed: () {}, icon: const FaIcon(FontAwesomeIcons.userLarge))
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const FilmDetail();
+                  },
+                ));
+              },
+              icon: const FaIcon(FontAwesomeIcons.userLarge))
         ],
       ),
       body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:films/contoller/filmuploader.dart';
 import 'package:films/provider/film_model.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,7 +10,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
 class Films with ChangeNotifier {
-  final List<Film> _films = [
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference filmsstorage = FirebaseFirestore.instance.collection('films');
+  // ignore: prefer_final_fields
+  List<Film> _films = [
     Film(
         name: "Black Widow",
         director: "Cate Shortland",
@@ -181,14 +188,15 @@ class Films with ChangeNotifier {
     notifyListeners();
   }
 
-  Film findByname(String name) {
-    return _films.firstWhere((film) => film.name == name);
+  // Film findByname(String name) {
+  //   return _films.firstWhere((film) => film.name == name);
+  // }
+
+  Film findById(String Id) {
+    return _films.firstWhere((film) => film.id == Id);
   }
 
-  Film findById(String id) {
-    return _films.firstWhere((film) => film.id == id);
-  }
-
+  final Filmcontoller _filmcontoller = Filmcontoller();
   final ImagePicker _picker = ImagePicker();
   File _image = File("");
 
@@ -207,5 +215,37 @@ class Films with ChangeNotifier {
     } catch (e) {
       Logger().e(e);
     }
+  }
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  void setisLoading(bool val) {
+    _isLoading = val;
+    notifyListeners();
+  }
+
+  Future<void> startSaveFilmInfo(
+    String title,
+    BuildContext context,
+    String desc,
+  ) async {
+  try {
+    setisLoading(true);
+    await _filmcontoller.saveFilmInfo(title, desc,_image );
+    setisLoading(false);
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.SUCCES,
+      animType: AnimType.BOTTOMSLIDE,
+      title: 'Sucess',
+      desc: 'Book Info saved sucessfull',
+      btnOkOnPress: () {},
+    ).show();
+    Logger().i("Book is Saved");
+  } catch (e) { Logger().i("Book is Not Saved == $e");
+  }  
+   
+  
   }
 }
